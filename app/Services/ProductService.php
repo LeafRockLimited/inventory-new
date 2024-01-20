@@ -14,14 +14,22 @@ use Milon\Barcode\DNS2D;
 class ProductService implements ProductServiceInterface
 {
     static public function fetch($param){
-        $col = ['id','nama','reg','harga_beli','harga_jual'];
+        $col = ['id','nama','reg','label_name','harga_beli','harga_jual','keterangan','products.created_at'];
        
 
-        $data = product::join('skus as sku','sku.id','products.id')
+        $data = product::select(
+            'products.*','pl.id as label_id','pl.nama as label_name',
+            'sku.id as id_sku','sku.harga_beli','sku.harga_jual','sku.masuk',
+            'sku.keluar','sku.penyesuaian','sku.total',
+        )
+        ->join('skus as sku','sku.id','products.id')
+        ->leftjoin('product_labels as pl','products.label_id','pl.id')
         ->when($param['search'],function($sub) use($param){
             $sub->where('nama','ilike',"%$param[search]%");
         })
-        ->orderBy($col[$param['sortCol'] - 1],$param['sortDir'])
+        ->when($param['sortCol'],function($sub) use($param,$col){
+            $sub->orderBy($col[$param['sortCol'] - 1],$param['sortDir']);
+        })
         ->paginate($param['length']??10);
        
        

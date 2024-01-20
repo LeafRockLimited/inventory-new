@@ -2,7 +2,7 @@
     <div class="grid grid-cols-1 gap-4">
         <div class="flex flex-row justify-between">
             <div>
-               <SelectOption @update:value="(item) =>{length = parseInt(item)}" :value="length??10" :data="[10,25,50,75,100]"></SelectOption>
+               <SelectOption @update:value="(item) => {length = parseInt(item)}" :value="length??10" :data="[10,25,50,75,100]"></SelectOption>
             </div>
             <div>
                 <TextInputField
@@ -12,10 +12,13 @@
                 </TextInputField>
             </div>
         </div>
-        <div>
-            <table class="w-full dark:text-white">
-                <thead>
-                    <th class="border-b" v-for="(item, index) in columns" :key="index">
+        <div class="rounded-lg overflow-hidden">
+            <table class="border-neutral-50 table-fixed flex-nowrap p-3 w-full dark:text-white">
+                <thead class="bg-custom-red static">
+                    <th @click="() => {
+                        dir == 'asc' ? dir = 'desc' : dir = 'asc';
+                        this.$emit('update:colSort',{col:index + 1,dir: dir});
+                    }" class="w-fit border-b py-2.5 text-white" v-for="(item, index) in columns" :key="index">
                         <div class="inline-flex">
                             <span>{{ item }} </span>
                             <button>
@@ -26,8 +29,9 @@
                 </thead>
                 <tbody>
                     <tr v-if="data.length > 0" v-for="(item, index) in data" :key="index">
-                    <td class="py-2 border-b pl-2" v-for="(itemCol, indexCol) in item" :key="indexCol">
-                            <div v-html="itemCol.item" @click="handleFunctionEvent(itemCol.function)"></div>
+                         <td class="py-2 border-b pl-5" v-for="(itemCol, indexCol) in item" :key="indexCol">
+                            <div v-if="itemCol.function" v-html="itemCol.item" @click="handleFunctionEvent(itemCol.function)"></div>
+                            <div v-else v-html="itemCol.item"></div>
                         </td>
                     </tr>
                     <template v-else>
@@ -37,11 +41,23 @@
                     </template>
                 </tbody>
             </table>
-            <div class="grid mt-4 dark:text-white">
-                <div>
-                    Total data {{ totalData }}
-                </div>    
-            </div>
+           
+           <div class="flex flex-rows justify-between items-center">
+                <div class="grid mt-4 dark:text-white">
+                    <div>
+                        Total data {{ totalData }}
+                    </div>    
+                </div>
+                <div class="links-container inline-flex">
+                    <div v-for="(item, index) in links" :key="index">
+                        <button class="px-3 py-1"
+                        :class="{
+                            'bg-custom-red shadow text-white' : item.active,
+                            ' bg-neutral-100  text-rose-600' : !item.active,
+                        }" @click="() => {this.$emit('update:page',item.url)}" v-html="item.label"></button>
+                    </div>
+                </div>
+           </div>
         </div>
     </div>
 </template>
@@ -49,14 +65,22 @@
 <script>
 import TextInputField from '@/Components/TextInputField.vue';
 import SelectOption from './SelectOption.vue';
+import { debounce } from 'vue-debounce'
 export default {
+    directives: {
+        debounce
+    },
     props:{
         columns:Array,
-        data:Array,
+        data:{
+            type:Array,
+            default:[{item:null, function:null}]
+        },
         deleteHandler: Function,
         totalData: Number,
         length:Number,
-        search:String
+        search:String,
+        links:Array
     },
     components:{
         TextInputField,
@@ -64,7 +88,8 @@ export default {
     },
     data() {
         return {
-            searchVal:''
+            searchVal:'',
+            dir:'asc'
         }
     },
     watch: {

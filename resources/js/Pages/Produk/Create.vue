@@ -151,10 +151,10 @@
                                 </button>
                             </div>
 
-                            <div class="container space-y-2 h-fit w-full transition-transform duration-100 delay-75 ease-in-out"
+                            <div class="container space-y-2 h-fit w-full transition-opacity duration-150 delay-100 ease-in-out"
                             :class="{
-                                'h-fit':isCreateLabel,
-                                'h-0 overflow-hidden':!isCreateLabel
+                                ' opacity-100':isCreateLabel == true,
+                                ' opacity-0':isCreateLabel == false
                             }">
                                 <TextInputField 
                                 class="bg-transparent border-custom-blue-500"
