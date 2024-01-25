@@ -42,10 +42,17 @@ class SkuService implements SkuServiceInterface
        }
     }
 
-    static public function update(int $product_id, $harga):void{
+    static public function update(int $product_id, $harga_beli = null, $harga_jual = null):void{
         try {
+            $slug = [
+                'harga_beli' => $harga_beli,
+                'harga_jual' =>  $harga_jual
+            ];
+
+            $slug = array_filter($slug);
+
             Sku::where('product_id',$product_id)
-            ->update(['harga'=>$harga]);
+            ->update($slug);
         } catch (\Throwable $th) {
             throw $th;
         }

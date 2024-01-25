@@ -1,5 +1,5 @@
 <template>
-    <div class="grid grid-cols-1 gap-4">
+    <div class="grid grid-cols-1 gap-4 ">
         <div class="flex flex-row justify-between">
             <div>
                <SelectOption @update:value="(item) => {length = parseInt(item)}" :value="length??10" :data="[10,25,50,75,100]"></SelectOption>
@@ -12,13 +12,13 @@
                 </TextInputField>
             </div>
         </div>
-        <div class="rounded-lg overflow-hidden">
-            <table class="border-neutral-50 table-fixed flex-nowrap p-3 w-full dark:text-white">
-                <thead class="bg-custom-red static">
+        <div class="grid grid-cols-1 gap-6 overflow-hidden">
+            <table class="table overflow-x">
+                <thead class="whitespace-nowrap">
                     <th @click="() => {
                         dir == 'asc' ? dir = 'desc' : dir = 'asc';
                         this.$emit('update:colSort',{col:index + 1,dir: dir});
-                    }" class="w-fit border-b py-2.5 text-white" v-for="(item, index) in columns" :key="index">
+                    }" class=" " v-for="(item, index) in columns" :key="index">
                         <div class="inline-flex">
                             <span>{{ item }} </span>
                             <button>
@@ -30,6 +30,7 @@
                 <tbody>
                     <tr v-if="data.length > 0" v-for="(item, index) in data" :key="index">
                          <td class="py-2 border-b pl-5" v-for="(itemCol, indexCol) in item" :key="indexCol">
+                            <component :is="itemCol.component"/>
                             <div v-if="itemCol.function" v-html="itemCol.item" @click="handleFunctionEvent(itemCol.function)"></div>
                             <div v-else v-html="itemCol.item"></div>
                         </td>
@@ -43,17 +44,16 @@
             </table>
            
            <div class="flex flex-rows justify-between items-center">
-                <div class="grid mt-4 dark:text-white">
+                <div class="grid mt-4 prose">
                     <div>
                         Total data {{ totalData }}
                     </div>    
                 </div>
-                <div class="links-container inline-flex">
+                <div class="links-container join">
                     <div v-for="(item, index) in links" :key="index">
-                        <button class="px-3 py-1"
+                        <button class="join-item btn"
                         :class="{
-                            'bg-custom-red shadow text-white' : item.active,
-                            ' bg-neutral-100  text-rose-600' : !item.active,
+                            'bg-primary text-white' : item.active,
                         }" @click="() => {this.$emit('update:page',item.url)}" v-html="item.label"></button>
                     </div>
                 </div>
@@ -64,8 +64,9 @@
 
 <script>
 import TextInputField from '@/Components/TextInputField.vue';
-import SelectOption from './SelectOption.vue';
+import SelectOption from '@/Components/SelectOption.vue';
 import { debounce } from 'vue-debounce'
+
 export default {
     directives: {
         debounce

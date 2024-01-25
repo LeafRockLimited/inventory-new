@@ -1,11 +1,10 @@
 <template>
-        <Head title="Produk" />
+        <Head :title="'Edit - '+produk.nama" />
         <AuthenticatedLayout>
-
+            
             <div class="w-full px-6 xl:px-28 p-4 rounded">
-
                 <div class="container py-2 space-y-2">
-                    <p class="text-lg">Product Initial</p>
+                    <p class="text-lg">Edit {{ produk.nama }}</p>
                     <Link 
                     class="text-sm text-custom-red inline-flex"
                     :href="route('product.index')">
@@ -136,7 +135,6 @@
                            <v-select
                            class="bg-transparent border rounded dark:border-custom-red"
                            v-model="label"
-                           multiple
                            :options="optionLabel"></v-select>
                         </div>
 
@@ -163,7 +161,7 @@
                                     </template>
                                 </button>
                             </div>
-
+                            
                             <div class="container space-y-2 h-fit w-full transition-opacity duration-150 delay-100 ease-in-out"
                             :class="{
                                 ' opacity-100':isCreateLabel == true,
@@ -200,27 +198,32 @@ import Alert from '@/Components/Alert.vue'
 import axios from 'axios'
 export default {
     components:{
-    Head, AuthenticatedLayout,
-    TextInputField, LabelCustom,
-    LabelCustom,
-    Link,PrimaryButton,Alert
-},
+        Head, AuthenticatedLayout,
+        TextInputField, LabelCustom,
+        LabelCustom,
+        Link,PrimaryButton,Alert
+    },
+    props:{
+        produk:Array
+    },  
     data() {
         return {
             namaProduk:{
-                value:null,
+                value: this.produk.nama,
                 message:null
             },
             reg:{
-                value:null,
+                value:this.produk.reg,
                 message:null
             },
-            image:[],
-            harga_beli:0,
-            harga_jual:0,
-            label:null,
+            image:this.produk.image.map((item) => {
+                return {path : item.image_path};
+            }),
+            harga_beli:parseInt(this.produk.sku.harga_beli),
+            harga_jual:parseInt(this.produk.sku.harga_jual),
+            label:this.produk.label.nama,
             labelPost:null,
-            keterangan:null,
+            keterangan:this.produk.keterangan,
             optionLabel:[],
             isCreateLabel:false,
             statusAlert:null,
@@ -256,8 +259,8 @@ export default {
         },
         async postProductHandler(){
 
-
             var data = new FormData();
+            data.append('_method','PUT')
             if(this.namaProduk.value != null) data.append('nama',this.namaProduk.value);
             if(this.namaProduk.value != null) data.append('reg',this.reg.value);
             if(this.keterangan != null) data.append('keterangan',this.keterangan);
@@ -266,14 +269,25 @@ export default {
             if(this.harga_jual) data.append('harga_jual',this.harga_jual);
 
             this.image.forEach(element => {
-                data.append('image_path[]',element.file)
+                
+                if (element.file) {
+                    data.append('image_path[]',element.file)
+                }else{
+                    data.append('old_image_path[]',element.path)
+                }
+
             });
 
-            const response = await axios.post(route('product.insert'),data,{
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                },
-            })
+
+            const response = await axios.post(
+                route('product.update',this.produk.id),
+                data,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                }
+            )
             .then((result) => {
                 this.statusMessage = `<div class="flex flex-row justify-between items-center">
                     <span>berhasil menambah produk</span> <a class="bg-emerald-700  text-white px-2 py-1 rounded " href="${route('product.index')}">Kembali ke halaman produk</a>

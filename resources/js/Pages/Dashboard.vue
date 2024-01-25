@@ -7,8 +7,8 @@
             <h2 class="font-semibold text-xl text-gray-800 dark:text-white leading-tight">Dashboard</h2>
         </template>
 
-        <div class="grid grid-flow-row grid-cols-4 gap-4 p-16">
-            <MenuCard bg-color="bg-blue-500">
+        <div class="grid grid-flow-row grid-cols-4 gap-8 p-16">
+            <MenuCard bg-color="bg-blue-600">
                 <template v-slot:icon>
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class=" text-blue-400">
                         <circle cx="12" cy="6" r="4" fill="currentColor" />
@@ -22,20 +22,12 @@
                     </span>
                 </template>
                 <template v-slot:link>
-                    <Link :href="route('user.index')" class="bg-white p-2 rounded text-blue-500">
-                    <span class=" inline-flex">
+                    <Link :href="route('user.index')">
                         Menuju halaman
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6" viewBox="0 0 50 50">
-                            <path fill="currentColor"
-                                d="M25 42c-9.4 0-17-7.6-17-17S15.6 8 25 8s17 7.6 17 17s-7.6 17-17 17m0-32c-8.3 0-15 6.7-15 15s6.7 15 15 15s15-6.7 15-15s-6.7-15-15-15" />
-                            <path fill="currentColor" d="m24.7 34.7l-1.4-1.4l8.3-8.3l-8.3-8.3l1.4-1.4l9.7 9.7z" />
-                            <path fill="currentColor" d="M16 24h17v2H16z" />
-                        </svg>
-                    </span>
                     </Link>
                 </template>
             </MenuCard>
-            <MenuCard bg-color="bg-red-500">
+            <MenuCard bg-color="bg-rose-600">
                 <template v-slot:icon>
                     <svg xmlns="http://www.w3.org/2000/svg"  class=" text-red-400" viewBox="0 0 2048 2048">
                         <path fill="currentColor"
@@ -48,16 +40,8 @@
                     </span>
                 </template>
                 <template v-slot:link>
-                    <Link :href="route('product.index')" class="bg-white p-2 rounded text-blue-500">
-                    <span class=" inline-flex">
+                    <Link :href="route('product.index')" >
                         Menuju halaman
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6" viewBox="0 0 50 50">
-                            <path fill="currentColor"
-                                d="M25 42c-9.4 0-17-7.6-17-17S15.6 8 25 8s17 7.6 17 17s-7.6 17-17 17m0-32c-8.3 0-15 6.7-15 15s6.7 15 15 15s15-6.7 15-15s-6.7-15-15-15" />
-                            <path fill="currentColor" d="m24.7 34.7l-1.4-1.4l8.3-8.3l-8.3-8.3l1.4-1.4l9.7 9.7z" />
-                            <path fill="currentColor" d="M16 24h17v2H16z" />
-                        </svg>
-                    </span>
                     </Link>
                 </template>
             </MenuCard>

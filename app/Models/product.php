@@ -16,10 +16,19 @@ class product extends Model
         'reg',
         'barcode_path',
         'keterangan',
-        'label_id'
+        'label_id',
+        'status'
     ];
 
     public function sku(){
         return $this->hasOne(Sku::class,'product_id','id');
+    }
+
+    public function image(){
+        return $this->hasMany(ProductImage::class,'product_id','id');
+    }
+
+    public function label(){
+        return $this->hasOne(ProductLabel::class,'id','label_id');
     }
 }

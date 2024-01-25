@@ -57,10 +57,13 @@ Route::middleware('auth')->group(function () {
         Route::get('/','index')->name('index');
         Route::get('create','create')->name('create');
         Route::get('data','data')->name('data');
+        Route::get('detail/{id}','detail')->name('detail');
+        Route::get('edit/{id}','edit')->name('edit');
+
         Route::post('insert','insert')->name('insert');
-        Route::put('update/{id}','update');
+        Route::put('update/{id}','update')->name('update');
         Route::put('labeling/{product_id}','labeling')->name('labeling');
-        Route::delete('delete/{id}','delete');
+        Route::delete('delete/{id}','delete')->name('delete');
 
         Route::get('rekap','rekapFindAll')->name('rekapFindAll');
     });

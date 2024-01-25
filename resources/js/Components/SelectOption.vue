@@ -2,7 +2,7 @@
     <select
     :value="value"
     @change="(item)=> {$emit('update:value', item.target.value)}"
-    class=" max-h-10 rounded border dark:border-custom-red dark:bg-transparent dark:text-white border-neutral-500" id="">
+    class=" select select-bordered w-full max-w-xs" id="">
         <option v-for="(item, index) in data" :key="index" :value="item">{{ item }}</option>
     </select>
 </template>

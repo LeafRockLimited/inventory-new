@@ -18,6 +18,13 @@ class ProductController extends Controller
         return Inertia::render('Produk/Create');
     }
     
+    public function edit($id){
+        $produk = product::with('sku','label','image')->find($id);
+        return Inertia::render('Produk/Edit',[
+           "produk" => $produk
+        ]);
+    }
+
     public function data(Request $request){
         $param = [
             'search' => $request->search,
@@ -54,6 +61,11 @@ class ProductController extends Controller
         catch (\Throwable $th) {
             throw $th;
         }
+    }
+
+    public function detail($id){
+        $produk = product::with('sku','image')->find($id);
+        return Inertia::render('Produk/Detail',['produk'=>$produk]);
     }
 
     public function update(Request $request, $id){
