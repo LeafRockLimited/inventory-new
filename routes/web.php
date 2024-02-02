@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\GudangController;
 use App\Http\Controllers\PemasokController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductLabelController;
@@ -67,6 +68,17 @@ Route::middleware('auth')->group(function () {
 
         Route::get('rekap','rekapFindAll')->name('rekapFindAll');
     });
+
+
+    Route::name('gudang.')
+    ->prefix('gudang')
+    ->controller(GudangController::class)
+    ->group(function(){
+        Route::get('index','index')->name('index');
+        Route::get('tambah_gudang','tambahIndex');
+        Route::post('create','create');
+    });
+
 
     Route::name('produk_label.')
     ->prefix('produk_label')

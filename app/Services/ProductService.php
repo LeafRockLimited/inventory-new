@@ -95,7 +95,7 @@ class ProductService implements ProductServiceInterface
                 $oldImageTemp[] = $value->image_path;
                 $value->delete();
             }
-            
+
             $label = null;
             if(isset($data['label'])){
                 $label = ProductLabel::where('nama',$data['label'])->first();
@@ -116,7 +116,7 @@ class ProductService implements ProductServiceInterface
             where('id',$id)
             ->update($updateData);
 
-            if (isset($data['harga'])) {
+            if (isset($data['harga_beli'])) {
                 SkuService::update($id, $data['harga_beli'], $data['harga_jual']);
             }
             DB::commit();
