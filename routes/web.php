@@ -77,6 +77,7 @@ Route::middleware('auth')->group(function () {
         Route::get('index','index')->name('index');
         Route::get('tambah_gudang','tambahIndex');
         Route::post('create','create');
+        Route::post('barang_masuk','barangMasuk');
     });
 
 

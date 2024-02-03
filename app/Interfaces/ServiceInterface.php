@@ -1,4 +1,4 @@
 <?php
 namespace App\Interfaces;
 
-class ServiceInterface{}
+interface ServiceInterface{}

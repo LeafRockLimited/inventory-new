@@ -11,8 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('skus', function (Blueprint $table) {       
-            $table->unsignedBigInteger('gudang_id')->nullable();
+        Schema::create('jenis_transaksi', function (Blueprint $table) {
+            $table->id();
+            $table->string('jenis_transaksi');
+            $table->timestamps();
         });
     }
 
@@ -21,8 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('skus', function (Blueprint $table) {
-            $table->dropColumn('gudang_id');
-        });
+        Schema::dropIfExists('jenis_transaksi');
     }
 };

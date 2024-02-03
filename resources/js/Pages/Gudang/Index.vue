@@ -24,11 +24,20 @@
 
                     <div class="stats shadow">
                         <div class="stat">
+                            <div class="stat-title">Gudang Aktif</div>
+                            <div class="stat-value">
+                                {{ gudang_aktif_count }}
+                            </div>
+                            <!-- <div class="stat-desc">Gudang Aktif</div> -->
+                        </div>
+                    </div>
+                    <div class="stats shadow">
+                        <div class="stat">
                             <div class="stat-title">Total Gudang</div>
                             <div class="stat-value">
-                                2
+                                {{ gudang_count }}
                             </div>
-                            <div class="stat-desc">Perhitungan berdasar gudang aktif</div>
+                            <!-- <div class="stat-desc">Gudang Aktif</div> -->
                         </div>
                     </div>
                     
@@ -45,6 +54,10 @@ import { Head, Link } from '@inertiajs/vue3';
 export default {
     components:{
         Head, AuthenticatedLayout ,Link
+    },
+    props:{
+        gudang_count:Number,
+        gudang_aktif_count:Number
     }
 }
 </script>

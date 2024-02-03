@@ -25,4 +25,5 @@ class Sku extends Model
     public function product(){
         return $this->belongsTo(product::class,'product_id','id');
     }
+    
 }
